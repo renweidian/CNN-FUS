@@ -4,8 +4,8 @@ global sigmas
 load('.\FFDNet-master\FFDNet-master\models\FFDNet_gray.mat');
 %   load('G:\HSI-superresolution\FFDNet-master\FFDNet-master\models\FFDNet_Clip_gray.mat');
 sig=para.sig;
-% net = vl_simplenn_tidy(net);
-net=vl_simplenn_move(net, 'gpu') ;
+ net = vl_simplenn_tidy(net);
+%net=vl_simplenn_move(net, 'gpu') ;
 p=para.p;
 mu=1e-3;
 
@@ -97,8 +97,8 @@ for jj=1:size(B2,3)
     max_x = max(eigen_im(:));
     eigen_im = eigen_im - min_x;
     scale = max_x-min_x;
-    eigen_im =single (eigen_im/scale);
-     input = gpuArray(eigen_im);
+    input =single (eigen_im/scale);
+     %input = gpuArray(input);
     sigmas=sig/2/scale/mu;
     res    = vl_simplenn(net,input,[],[],'conserveMemory',true,'mode','test');
     BB = gather(res(end).x);
